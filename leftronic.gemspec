@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "leftronic.gemspec",
     "lib/leftronic.rb",
     "test/helper.rb",
     "test/test_leftronic.rb"
