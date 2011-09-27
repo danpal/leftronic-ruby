@@ -15,13 +15,13 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "leftronic"
-  gem.homepage = "http://github.com/peterfschaadt/leftronic"
-  gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
-  gem.email = "peterfschaadt@yahoo.com"
+  gem.homepage = "http://github.com/sonofabell/leftronic-ruby"
+  gem.license = "GNU - LGPL"
+  gem.summary = %Q{A Ruby Gem to interface with the Leftronic API.}
+  gem.description = %Q{Provides a set of functions to update Leftronic dashboard widgets with custom data. Data is submitted by an HTTP POST request with data encoded in the JSON format.}
+  gem.email = "support@leftronic.com"
   gem.authors = ["Peter Schaadt"]
-  # dependencies defined in Gemfile
+  ### dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
 

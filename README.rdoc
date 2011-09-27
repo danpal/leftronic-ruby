@@ -1,8 +1,38 @@
-= leftronic
+= Leftronic Ruby Gem
 
-Description goes here.
+== What is Leftronic?
 
-== Contributing to leftronic
+Leftronic[https://beta.leftronic.com] makes powerful dashboards for business intelligence.
+
+* Colorful and interactive data visualizations
+* Templates to get you started right away
+* Drag-and-drop editor makes it easy for anyone to create a powerful dashboard, customized to their needs
+* Integration with Google Analytics, Twitter, Chartbeat, Zendesk, Basecamp, Pivotal Tracker, Facebook, and more to come!
+* Dashboards can be protected or shared with a shortened URL
+* Powerful API's for Javascript, PHP, Python, Ruby, and Java
+* Python Package and Ruby Gem
+
+== Technical Notes
+
+We also suggest checking out our API[https://beta.leftronic.com/api] page. While the most detailed documentation is here, it has JSON and CURL examples in addition to a test form to send data to your custom widgets.
+
+Authentication is handled by your API access key. We strongly encourage you to keep this key private. If you're logged in, your key can be found on our API[https://beta.leftronic.com/api] page. If you plan on using one of our API libraries, you will find instructions below on how to set your access key.
+
+All API requests are made by sending a POST request to https://beta.leftronic.com/customSend with a properly formatted JSON packet. We do not support XML.
+
+Current API version is 1.0.
+
+== Getting Started
+
+If you haven't already, create an account at https://beta.leftronic.com/accounts/login.
+
+Get your API access key from the API overview page at https://beta.leftronic.com/api.
+
+We recommend checking out our Tutorials[https://beta.leftronic.com/tutorials] to familiarize yourself with your dashboard.
+
+For examples and further documentation, the source for this Gem is on Github[https://github.com/sonofabell/leftronic-ruby].
+
+== Contributing to Leftronic Gem
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
@@ -14,6 +44,4 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2011 Peter Schaadt. See LICENSE.txt for
-further details.
-
+Copyright (c) 2011 Leftronic[https://beta.leftronic.com]. License is GNU Library or Lesser General Public License (LGPL). A copy of the license is available at http://www.gnu.org/copyleft/lesser.html. See LICENSE.txt for further details.
