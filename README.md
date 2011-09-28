@@ -24,7 +24,7 @@ Authentication is handled by your API access key. We strongly encourage you to k
 All API requests are made by sending a POST request to https://beta.leftronic.com/customSend with a properly formatted JSON packet. We do not support XML.
 
 Current API version is 1.0.
-Current Ruby Gem version is 1.0.0.
+Current Ruby Gem version is 1.1.0.
 
 Getting Started
 ---------------
@@ -73,7 +73,7 @@ update = Leftronic.pushNumber("yourNumberStream", 14600)
 Now we'll push some geographic coordinates to a map widget. You can use either the U.S. or world map widgets. The first coordinate (37.8) is the latitude and the second coordinate (-122.6) is the longitude. If your request is successful, you should see a data point appear on San Francisco, California.
 
 ```ruby
-update = Leftronic.pushLocation("yourGeoStream", 37.8, -122.6)
+update = Leftronic.pushGeo("yourGeoStream", 37.8, -122.6)
 ```
 
 Here's how you push a title and message to a text feed widget.
@@ -87,7 +87,7 @@ Let's push an array of names and values to a leaderboard widget. Be sure to crea
 ```ruby
 leaderArray = Array[{"name" => "Johnny", "value" => 84}, {"name" => "Jamie", "value" => 75}, {"name" => "Lance", "value" => 62}]
 
-update = Leftronic.pushBoard("yourBoardStream", leaderArray)
+update = Leftronic.pushLeaderboard("yourBoardStream", leaderArray)
 ```
 
 Similar to the last example, let's push a list of items to a list widget. Same rules as last time.
