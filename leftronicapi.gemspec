@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "leftronicapi"
-  s.version = "1.0.0"
+  s.version = "1.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Peter Schaadt"]
-  s.date = "2011-09-27"
+  s.date = "2011-09-28"
   s.description = "Provides a set of functions to update Leftronic dashboard widgets with custom data. Data is submitted by an HTTP POST request with data encoded in the JSON format."
   s.email = "support@leftronic.com"
   s.extra_rdoc_files = [
@@ -26,7 +26,8 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
-    "leftronic.gemspec",
+    "leftronicapi-1.0.0.gem",
+    "leftronicapi.gemspec",
     "lib/leftronic.rb",
     "test/helper.rb",
     "test/test_leftronic.rb"
