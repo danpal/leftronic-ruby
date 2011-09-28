@@ -24,7 +24,7 @@ Authentication is handled by your API access key. We strongly encourage you to k
 All API requests are made by sending a POST request to https://beta.leftronic.com/customSend with a properly formatted JSON packet. We do not support XML.
 
 Current API version is 1.0.
-Current Ruby Gem version is 1.1.0.
+Current Ruby Gem version is 1.1.1.
 
 Getting Started
 ---------------
