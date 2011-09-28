@@ -25,7 +25,7 @@ class Leftronic
           end
   end
 
-  def self.pushLocation(streamName, lati, longi)
+  def self.pushGeo(streamName, lati, longi)
       ### Pushing a geographic location (latitude and longitude) to a Map widget
       parameters = {"accessKey" => @@accessKey, "streamName" => streamName, "point" => {
         "latitude" => lati, "longitude" => longi}}
@@ -55,7 +55,7 @@ class Leftronic
           end
   end
 
-  def self.pushBoard(streamName, leaderArray)
+  def self.pushLeaderboard(streamName, leaderArray)
       ### Pushing an array to the Leaderboard widget
       parameters = {"accessKey" => @@accessKey, "streamName" => streamName, "point" => {
         "leaderboard" => leaderArray}}
