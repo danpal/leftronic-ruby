@@ -1,88 +1,84 @@
+require 'net/http'
+require 'net/https'
 require 'rubygems'
-require 'curb'
 require 'json'
 
 class Leftronic
-
-  attr_accessor :accessKey
-  
-  # Class variable
-  def initialize(accessKey)
-      @@accessKey = accessKey
+  ALLOWED_COLORS = [:red, :yellow, :green, :blue, :purple]
+  attr_accessor :key
+  def url=(url)
+    @url = URI(url.to_s)
+  end
+  def url
+    @url.to_s
   end
 
-  def self.pushNumber(streamName, point)
-      ### Pushing a number to a Number, Horizontal/Vertical Bar, or Dial widget
-      parameters = {"accessKey" => @@accessKey, "streamName" => streamName, "point" => point}
-      # Convert to JSON
-      jsonData = parameters.to_json()
-      # Form request
-      urlRequest = Curl::Easy.http_post("https://beta.leftronic.com/customSend/", jsonData
-      # Make request
-          ) do |curl|
-            curl.headers['Accept'] = 'application/json'
-            curl.headers['Content-Type'] = 'application/json'
-          end
+  def initialize(key, url='https://beta.leftronic.com/customSend/')
+    @key = key
+    self.url = url
   end
 
-  def self.pushGeo(streamName, lati, longi)
-      ### Pushing a geographic location (latitude and longitude) to a Map widget
-      parameters = {"accessKey" => @@accessKey, "streamName" => streamName, "point" => {
-        "latitude" => lati, "longitude" => longi}}
-      # Convert to JSON
-      jsonData = parameters.to_json()
-      # Form request
-      urlRequest = Curl::Easy.http_post("https://beta.leftronic.com/customSend/", jsonData
-      # Make request
-          ) do |curl|
-            curl.headers['Accept'] = 'application/json'
-            curl.headers['Content-Type'] = 'application/json'
-          end
-  end
-  
-  def self.pushText(streamName, myTitle, myMsg)
-      ### Pushing a title and message to a Text Feed widget
-      parameters = {"accessKey" => @@accessKey, "streamName" => streamName, "point" => {
-        "title" => myTitle, "msg" => myMsg}}
-      # Convert to JSON
-      jsonData = parameters.to_json()
-      # Form request
-      urlRequest = Curl::Easy.http_post("https://beta.leftronic.com/customSend/", jsonData
-      # Make request
-          ) do |curl|
-            curl.headers['Accept'] = 'application/json'
-            curl.headers['Content-Type'] = 'application/json'
-          end
+  # Push anything to a widget
+  def push(stream, object)
+    post stream, object
   end
 
-  def self.pushLeaderboard(streamName, leaderArray)
-      ### Pushing an array to the Leaderboard widget
-      parameters = {"accessKey" => @@accessKey, "streamName" => streamName, "point" => {
-        "leaderboard" => leaderArray}}
-      # Convert to JSON
-      jsonData = parameters.to_json()
-      # Form request
-      urlRequest = Curl::Easy.http_post("https://beta.leftronic.com/customSend/", jsonData
-      # Make request
-          ) do |curl|
-            curl.headers['Accept'] = 'application/json'
-            curl.headers['Content-Type'] = 'application/json'
-          end
-  end
-  
-  def self.pushList(streamName, listArray)
-      ### Pushing an array to the List widget
-      parameters = {"accessKey" => @@accessKey, "streamName" => streamName, "point" => {
-        "list" => listArray}}
-      # Convert to JSON
-      jsonData = parameters.to_json()
-      # Form request
-      urlRequest = Curl::Easy.http_post("https://beta.leftronic.com/customSend/", jsonData
-      # Make CURL request
-          ) do |curl|
-            curl.headers['Accept'] = 'application/json'
-            curl.headers['Content-Type'] = 'application/json'
-          end
+  # Push a Number to a widget
+  def push_number(stream, point)
+    post stream, point
   end
 
+  # Push a geographic location (latitude and longitude) to a Map widget
+  def push_geo(stream, lat, long, color=nil)
+    post stream, 'latitude' => lat, 'longitude' => long, 'color' => color
+  end
+
+  # Push a title and message to a Text Feed widget
+  def push_text(stream, title, message)
+    post stream, 'title' => title, 'msg' => message
+  end
+
+  # Push a hash to a Leaderboard widget
+  def push_leaderboard(stream, hash)
+    leaderboard = hash.inject([]) do |array, (key, value)|
+      array << {'name' => key, 'value' => value}
+    end
+    post stream, 'leaderboard' => leaderboard
+  end
+
+  # Push an array to a List widget
+  def push_list(stream, *array)
+    post stream, 'list' => array.flatten.map{|item| {'listItem' => item}}
+  end
+
+  protected
+
+  def post(stream, params)
+    request = build_request(stream, params)
+    connection = build_connection
+    connection.start{|http| http.request request}
+    params
+  end
+
+  def build_request(stream, params)
+    request = Net::HTTP::Post.new @url.request_uri
+    request['Accept'] = 'application/json'
+    request['Content-Type'] = 'application/json'
+    request.body = {
+      'accessKey' => @key,
+      'streamName' => stream,
+      'point' => params
+    }.to_json
+    request
+  end
+
+  def build_connection # NOTE: Does not open the connection
+    connection = Net::HTTP.new @url.host, @url.port
+    if @url.scheme == 'https'
+      connection.use_ssl = true
+      connection.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    end
+    connection
+  end
 end
+

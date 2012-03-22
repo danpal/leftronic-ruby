@@ -59,7 +59,7 @@ require 'leftronic'
 Create a class instance with your API key. Feel free to name it whatever you'd like.
 
 ```ruby
-update = Leftronic.new("YOUR_ACCESS_KEY")
+leftronic = Leftronic.new "YOUR_ACCESS_KEY"
 ```
 
 Here are some example functions to push to your dashboard. Be sure you have configured the correct widgets to accept custom data points. Also, be sure that you have entered your API access key correctly.
@@ -67,35 +67,42 @@ Here are some example functions to push to your dashboard. Be sure you have conf
 Let's start with pushing a number to a widget.
 
 ```ruby
-update = Leftronic.pushNumber("yourNumberStream", 14600)
+update = leftronic.push_number "yourNumberStream", 14600
 ```
 
-Now we'll push some geographic coordinates to a map widget. You can use either the U.S. or world map widgets. The first coordinate (37.8) is the latitude and the second coordinate (-122.6) is the longitude. If your request is successful, you should see a data point appear on San Francisco, California.
+Now we'll push some geographic coordinates to a map widget. You can use either the U.S. or world map widgets. The first coordinate (37.8) is the latitude and the second coordinate (-122.6) is the longitude. If your request is successful, you should see a data point appear on San Francisco, California. Optionally, if you'd like to set the color of your map point simply specify that in your function call. *Note*: only red, blue, green, purple, and yellow colors are supported at this time. Incorrect or missing color will default to red.
 
 ```ruby
-update = Leftronic.pushGeo("yourGeoStream", 37.8, -122.6)
+update = leftronic.push_geo "yourGeoStream", 37.8, -122.6
+```
+
+```ruby
+update = leftronic.push_geo "yourGeoStream", 37.8, -122.6, :blue
 ```
 
 Here's how you push a title and message to a text feed widget.
 
 ```ruby
-update = Leftronic.pushText("yourTextStream", "This is my title.", "Hello World!")
+update = leftronic.push_text "yourTextStream", "This is my title.", "Hello World!"
 ```
 
-Let's push an array of names and values to a leaderboard widget. Be sure to create the array first (you may call it whatever you'd like). Be careful to use the proper syntax. Next, push the array to your widget.
+A leaderboard widget requires a hash. The widget will display the hash entries sorted by value.
 
 ```ruby
-leaderArray = Array[{"name" => "Johnny", "value" => 84}, {"name" => "Jamie", "value" => 75}, {"name" => "Lance", "value" => 62}]
-
-update = Leftronic.pushLeaderboard("yourBoardStream", leaderArray)
+update = leftronic.push_leaderboard "yourBoardStream", some_hash
+```
+```ruby
+update = leftronic.push_leaderboard "yourBoardStream", 'Johnny' => 84, 'Jamie' => 75, 'Lance' => 62
 ```
 
-Similar to the last example, let's push a list of items to a list widget. Same rules as last time.
+Finally, let's push an array to a list widget.
 
 ```ruby
-listArray = Array[{"listItem" => "Elizabeth"}, {"listItem" => "Marshall"}, {"listItem" => "Claire"}, {"listItem" => "Nolan"}]
-
-update = Leftronic.pushList("yourListStream", listArray)
+update = leftronic.push_list "yourListStream", some_array
+```
+```ruby
+update = leftronic.push_list "yourListStream", 'Elizabeth', 'Marshall', 'Claire', 'Nolan'
+```
 ```
 
 Feedback and Issues

@@ -20,7 +20,8 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{The official Ruby Gem to interface with the Leftronic API.}
   gem.description = %Q{Provides a set of functions to update Leftronic dashboard widgets with custom data. Data is submitted by an HTTP POST request with data encoded in the JSON format.}
   gem.email = "support@leftronic.com"
-  gem.authors = ["Peter Schaadt"]
+  gem.authors = ["Cesar Del Solar"]
+  gem.version = '1.2.0'
   ### dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
