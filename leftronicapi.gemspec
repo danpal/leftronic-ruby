@@ -17,21 +17,8 @@ Gem::Specification.new do |s|
     "README.md",
     "README.rdoc"
   ]
-  s.files = [
-    ".document",
-    "Gemfile",
-    "Gemfile.lock",
-    "LICENSE.txt",
-    "README.md",
-    "README.rdoc",
-    "Rakefile",
-    "VERSION",
-    "leftronicapi-1.0.0.gem",
-    "leftronicapi.gemspec",
-    "lib/leftronic.rb",
-    "test/helper.rb",
-    "test/test_leftronic.rb"
-  ]
+  s.files       = `git ls-files`.split("\n")
+  
   s.homepage = %q{http://github.com/sonofabell/leftronic-ruby}
   s.licenses = ["GNU - LGPL"]
   s.require_paths = ["lib"]

@@ -1,7 +1,14 @@
+$:.unshift File.expand_path("../leftronic", __FILE__)
+
+
 require 'net/http'
 require 'net/https'
 require 'rubygems'
+require 'pry'
+binding.pry
 require 'json'
+require 'leftronic/table'
+require 'leftronic/list'
 
 class Leftronic
   ALLOWED_COLORS = [:red, :yellow, :green, :blue, :purple]
@@ -15,6 +22,8 @@ class Leftronic
 
   def initialize(key, url='https://beta.leftronic.com/customSend/')
     @key = key
+    @tables = {}
+    @lists = {} 
     self.url = url
   end
 
@@ -47,17 +56,37 @@ class Leftronic
   end
 
   # Push an array to a List widget
-  def push_list(stream, *array)
-    post stream, 'list' => array.flatten.map{|item| {'listItem' => item}}
+  def push_list(stream, msg)
+    if(@lists[stream])
+      @lists[stream].push(msg)
+      post stream, 'list' => @lists[stream].array.flatten.map{|item| {'listItem' => item}}
+    end
   end
+
+  def push_table(stream, row)
+    @tables[stream].push(row)
+    post stream, @tables[stream]
+  end
+  
+  def  create_table(stream, title)
+    @tables[stream] = Leftronic::Table.new(:stream_name => name, :title => title) 
+  end
+ 
+  def create_list(stream)
+    @lists[stream] = Leftronic::List.new()
+  end 
 
   protected
 
   def post(stream, params)
-    request = build_request(stream, params)
-    connection = build_connection
-    connection.start{|http| http.request request}
-    params
+    if Thread.list.count < 15
+      Thread.new do
+        request = build_request(stream, params)
+        connection = build_connection
+        connection.start{|http| http.request request}
+        params
+      end
+    end
   end
 
   def build_request(stream, params)
