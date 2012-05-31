@@ -4,8 +4,6 @@ $:.unshift File.expand_path("../leftronic", __FILE__)
 require 'net/http'
 require 'net/https'
 require 'rubygems'
-require 'pry'
-binding.pry
 require 'json'
 require 'leftronic/table'
 require 'leftronic/list'
@@ -65,11 +63,11 @@ class Leftronic
 
   def push_table(stream, row)
     @tables[stream].push(row)
-    post stream, @tables[stream]
+    post stream, @tables[stream].hash
   end
   
   def  create_table(stream, title)
-    @tables[stream] = Leftronic::Table.new(:stream_name => name, :title => title) 
+    @tables[stream] = Leftronic::Table.new(:title => title) 
   end
  
   def create_list(stream)
@@ -79,13 +77,11 @@ class Leftronic
   protected
 
   def post(stream, params)
-    if Thread.list.count < 15
-      Thread.new do
-        request = build_request(stream, params)
-        connection = build_connection
-        connection.start{|http| http.request request}
-        params
-      end
+    Thread.new do
+      request = build_request(stream, params)
+      connection = build_connection
+      connection.start{|http| http.request request}
+      params 
     end
   end
 

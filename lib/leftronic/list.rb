@@ -1,8 +1,8 @@
 #implements a table stream with a heap
-module Leftronic
+class Leftronic
   class List
     attr_accessor :array 
-    def initialize (option = {})
+    def initialize (options = {})
         @array= []
     end
 

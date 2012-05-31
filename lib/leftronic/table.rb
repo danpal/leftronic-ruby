@@ -1,8 +1,9 @@
 #implements a table stream with a heap
-module Leftronic
+class Leftronic
   class Table 
     attr_accessor :title
-    def initialize (option = {})
+    attr_accessor :hash
+    def initialize (options = {})
         self.title = options[:title] || ["blank", "blank", "blank"] 
         @hash = {}
         @hash[:table] = []
