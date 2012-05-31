@@ -21,7 +21,7 @@ class Leftronic
   def initialize(key, url='https://beta.leftronic.com/customSend/')
     @key = key
     @tables = {}
-    @lists = {} 
+    @lists = {}
     self.url = url
   end
 
@@ -61,18 +61,36 @@ class Leftronic
     end
   end
 
+  def persist_list(stream, msg)
+    persist_request(stream, :list, msg)
+  end
+
   def push_table(stream, row)
     @tables[stream].push(row)
     post stream, @tables[stream].hash
   end
-  
-  def  create_table(stream, title)
-    @tables[stream] = Leftronic::Table.new(:title => title) 
+
+  def persist_table(stream, row)
+    persist_request(stream, :table, row)
   end
- 
+
+  def create_table(stream, title)
+    @tables[stream] = Leftronic::Table.new(:title => title)
+  end
+
   def create_list(stream)
     @lists[stream] = Leftronic::List.new()
-  end 
+  end
+
+  def persist_request(type, stream, msg)
+    begin
+      File.open("/tmp/leftronics.#{type}.#{stream}", "a") do |f|
+        f.write msg.to_json+"\n"
+      end
+    rescue Exception => e
+      puts "Failed to persist #{type} #{stream} #{msg.inspect}: #{e}"
+    end
+  end
 
   protected
 
@@ -81,7 +99,7 @@ class Leftronic
       request = build_request(stream, params)
       connection = build_connection
       connection.start{|http| http.request request}
-      params 
+      params
     end
   end
 
