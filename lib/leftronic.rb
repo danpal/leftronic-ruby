@@ -1,11 +1,10 @@
-$:.unshift File.expand_path("../leftronic", __FILE__)
+$:.unshift File.expand_path("..", __FILE__)
 
 
 require 'net/http'
 require 'net/https'
 require 'rubygems'
 require 'json'
-require 'leftronic/table'
 require 'leftronic/list'
 
 class Leftronic
@@ -18,7 +17,7 @@ class Leftronic
     @url.to_s
   end
 
-  def initialize(key, url='https://beta.leftronic.com/customSend/')
+  def initialize(key, url='https://www.leftronic.com/customSend/')
     @key = key
     @tables = {}
     @lists = {} 
@@ -61,13 +60,15 @@ class Leftronic
     end
   end
 
+  # This pushes the new tableRow. Notice :tableRow is a new key to specify to leftronic
+  # this is only 1 row so not all table is updated
   def push_table(stream, row)
-    @tables[stream].push(row)
-    post stream, @tables[stream].hash
+    post stream, {:tableRow => row}
   end
-  
-  def  create_table(stream, title)
-    @tables[stream] = Leftronic::Table.new(:title => title) 
+
+  #This creates the initial table sending the title  
+  def create_table(stream, title)
+    post stream, title
   end
  
   def create_list(stream)
@@ -77,12 +78,12 @@ class Leftronic
   protected
 
   def post(stream, params)
-    Thread.new do
+    # Thread.new do
       request = build_request(stream, params)
       connection = build_connection
       connection.start{|http| http.request request}
       params 
-    end
+    # end
   end
 
   def build_request(stream, params)
