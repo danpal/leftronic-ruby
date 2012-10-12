@@ -5,7 +5,6 @@ require 'net/http'
 require 'net/https'
 require 'rubygems'
 require 'json'
-require 'leftronic/list'
 
 class Leftronic
   ALLOWED_COLORS = [:red, :yellow, :green, :blue, :purple]
@@ -19,7 +18,6 @@ class Leftronic
 
   def initialize(key, url='https://www.leftronic.com/customSend/')
     @key = key
-    @tables = {}
     @lists = {} 
     self.url = url
   end
@@ -78,12 +76,12 @@ class Leftronic
   protected
 
   def post(stream, params)
-    # Thread.new do
+    Thread.new do
       request = build_request(stream, params)
       connection = build_connection
       connection.start{|http| http.request request}
       params 
-    # end
+    end
   end
 
   def build_request(stream, params)
